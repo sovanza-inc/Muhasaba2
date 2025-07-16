@@ -3,7 +3,6 @@
 import * as React from 'react'
 
 import {
-  Badge,
   Box,
   IconButton,
   Spacer,
@@ -11,6 +10,8 @@ import {
   useBreakpointValue,
   Icon,
   Collapse,
+  Image,
+  Flex,
 } from '@chakra-ui/react'
 import {
   Command,
@@ -32,83 +33,102 @@ import {
 } from '@saas-ui/react'
 import { Route } from 'next'
 import { useRouter } from 'next/navigation'
-import {
-  LuCircleHelp,
-  LuHouse,
-  LuPlus,
-  LuSearch,
-  LuWallet,
-  LuChartArea,
-  LuReceipt,
-  LuUser,
-  LuBanknote,
-  LuFileText,
-  LuLayoutGrid,
-  LuTrendingUp,
-  LuClipboardList,
-  LuChartPie,
-  LuInbox,
-} from 'react-icons/lu'
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa' // Import arrow icons
 
 import { useActivePath } from '@acme/next'
-import { useHelpCenter } from '@acme/ui/help-center'
-import { useModals } from '@acme/ui/modals'
 
 import { usePath } from '#features/common/hooks/use-path'
 import { useUserSettings } from '#lib/user-settings/use-user-settings'
-import { useBankConnection } from '#features/bank-integrations/context/bank-connection-context'
-
-import { BillingStatus } from './billing-status'
-import { GlobalSearchInput } from './global-search-input'
-import { InvitePeopleDialog } from './invite-people'
-import { AppSidebarTags } from './sidebar-tags'
-import { UserMenu } from './user-menu'
-import { WorkspacesMenu } from './workspaces-menu'
 
 export interface AppSidebarProps extends SidebarProps {}
 
+interface AppSidebarLinkBaseProps {
+  href: Route
+  label: string
+  hotkey?: string
+  badge?: string | number
+  iconPath: string
+}
+
+// Create a type that excludes 'icon' from NavItemProps and combines with our base props
+type AppSidebarLinkProps = Omit<NavItemProps, 'icon' | keyof AppSidebarLinkBaseProps> & AppSidebarLinkBaseProps
+
+const AppSidebarLink: React.FC<AppSidebarLinkProps> = (props) => {
+  const { href, label, hotkey, badge, iconPath, ...rest } = props
+  const { push } = useRouter()
+  const isActive = useActivePath(href as string)
+  const { variant } = useSidebarContext()
+
+  // Only register hotkey if it's a valid navigation hotkey
+  const command = hotkey?.startsWith('navigation.') ? useHotkeysShortcut(hotkey, () => {
+    push(href as string)
+  }, [href]) : null
+
+  return (
+    <NavItem
+      href={href}
+      isActive={isActive}
+      {...rest}
+      px={4}
+      py={3}
+      fontSize="sm"
+      fontWeight="medium"
+      color="gray.600"
+      sx={{
+        _dark: { color: 'gray.300' },
+        _hover: {
+          bg: 'gray.100',
+          _dark: { bg: 'gray.700' }
+        },
+        _active: {
+          bg: 'gray.200',
+          _dark: { bg: 'gray.600' }
+        }
+      }}
+      display="flex"
+      alignItems="center"
+      gap={3}
+      icon={
+        <Box 
+          sx={{
+            color: isActive ? 'blue.500' : 'gray.500',
+            _dark: { color: isActive ? 'blue.400' : 'gray.400' }
+          }}
+        >
+          <Image 
+            src={iconPath} 
+            alt={`${label} icon`}
+            width="20px"
+            height="20px"
+            filter={isActive ? 'none' : 'grayscale(100%)'}
+            opacity={isActive ? 1 : 0.7}
+            transition="all 0.2s"
+            _hover={{ opacity: 0.9 }}
+          />
+        </Box>
+      }
+      tooltipProps={{
+        label: (
+          <>
+            {label} {<Command>{command}</Command>}
+          </>
+        ),
+      }}
+    >
+      <Box as="span" noOfLines={1}>
+        {label}
+      </Box>
+    </NavItem>
+  )
+}
+
 export const AppSidebar: React.FC<AppSidebarProps> = (props) => {
-  const modals = useModals()
-  const help = useHelpCenter()
-  const { hasBankConnection, isLoading } = useBankConnection()
-
   const [{ sidebarWidth }, setUserSettings] = useUserSettings()
-
   const { variant, colorScheme } = props
   const isCompact = variant === 'compact'
 
   const onResize: ResizeHandler = ({ width }) => {
     setUserSettings('sidebarWidth', width)
   }
-
-  const [isAccountingOpen, setIsAccountingOpen] = React.useState(false)
-  const [isReportsOpen, setIsReportsOpen] = React.useState(false)
-
-  // Track the active path to check if any subpage under Accounting is active
-  const isAccountsActive = useActivePath('accounts', { end: false })
-  const isIdentityActive = useActivePath('identity', { end: false })
-  const isTransactionActive = useActivePath('transaction', { end: false })
-  const isCashflowActive = useActivePath('cashflow', { end: true })
-  const isProfitLossActive = useActivePath('profit-loss', { end: false })
-  const isBalanceSheetActive = useActivePath('balance-sheet', { end: false })
-  const isCashflowStatementActive = useActivePath('cashflow-statement', { end: false })
-
-  // Check if menu items should be disabled
-  const isDisabled = !isLoading && !hasBankConnection
-
-  // Set the parent item to be open if any subpage is active
-  React.useEffect(() => {
-    if (isAccountsActive || isIdentityActive || isTransactionActive || isCashflowActive) {
-      setIsAccountingOpen(true)
-    }
-  }, [isAccountsActive, isIdentityActive, isTransactionActive, isCashflowActive])
-
-  React.useEffect(() => {
-    if (isProfitLossActive || isBalanceSheetActive || isCashflowStatementActive) {
-      setIsReportsOpen(true)
-    }
-  }, [isProfitLossActive, isBalanceSheetActive, isCashflowStatementActive])
 
   return (
     <Resizer
@@ -124,309 +144,90 @@ export const AppSidebar: React.FC<AppSidebarProps> = (props) => {
         variant={variant}
         colorScheme={colorScheme}
         suppressHydrationWarning
+        bg="white"
+        borderRightWidth="1px"
+        borderRightColor="gray.200"
+        sx={{
+          _dark: {
+            bg: 'gray.900',
+            borderRightColor: 'gray.700'
+          }
+        }}
       >
-        <Stack flex="1" spacing="4">
-          <SidebarToggleButton />
-          <SidebarSection direction="row">
-            <React.Suspense>
-              <WorkspacesMenu compact={isCompact} />
-            </React.Suspense>
-
-            {!isCompact && (
-              <>
-                <Spacer />
-                <React.Suspense>
-                  <UserMenu />
-                </React.Suspense>
-              </>
-            )}
+        <Stack flex="1" spacing="0">
+          <SidebarSection>
+            <Flex 
+              px={4} 
+              py={4} 
+              alignItems="center" 
+              height="64px" 
+              borderBottomWidth="1px" 
+              borderBottomColor="gray.200"
+              sx={{
+                _dark: {
+                  borderBottomColor: 'gray.700'
+                }
+              }}
+            >
+              <Image
+                src="/img/onboarding/muhasaba-logo.svg"
+                alt="Muhasaba"
+                height="32px"
+                objectFit="contain"
+              />
+            </Flex>
           </SidebarSection>
-          <Box px={3}>
-            {isCompact ? (
-              <IconButton icon={<LuSearch />} aria-label="Search" />
-            ) : (
-              <GlobalSearchInput />
-            )}
-          </Box>
-          <SidebarSection overflowY="auto" flex="1">
+
+          <SidebarSection overflowY="auto" flex="1" pt={4}>
             <NavGroup>
+              <AppSidebarLink
+                href={usePath('/integrations')}
+                label="Integrations"
+                iconPath="/img/onboarding/sidebar-icons/integration-icon.svg"
+                hotkey="navigation.integrations"
+              />
               <AppSidebarLink
                 href={usePath('/')}
                 label="Dashboard"
-                icon={<LuHouse />}
+                iconPath="/img/onboarding/sidebar-icons/dashboard-icon.svg"
                 hotkey="navigation.dashboard"
               />
               <AppSidebarLink
-                href={usePath('inbox')}
-                isActive={useActivePath('inbox', { end: false })}
-                label="Inbox"
-                icon={<LuInbox />}
-                hotkey="navigation.inbox"
+                href={usePath('/reconciliation')}
+                label="Reconciliation"
+                iconPath="/img/onboarding/sidebar-icons/reconciliation-icon.svg"
+                hotkey="navigation.reconciliation"
               />
-
-              {/* Bank Integrations Item */}
               <AppSidebarLink
-                href={usePath('bank-integrations')}
-                isActive={useActivePath('bank-integrations', { end: false })}
-                label="Bank Integrations"
-                icon={<LuWallet />}
-                hotkey="navigation.bankIntegrations"
+                href={usePath('/ai-assistant')}
+                label="AI Assistant"
+                iconPath="/img/onboarding/sidebar-icons/ai-assistant-icon.svg"
+                hotkey="navigation.aiAssistant"
               />
-              
-              {/* <AppSidebarLink
-                href={usePath('questionnaire-edit')}
-                isActive={useActivePath('questionnaire-edit', { end: false })}
-                label="Questionnaire"
-                icon={<LuFileText />}
-                hotkey="navigation.questionnaire"
-              /> */}
-
-              {/* Parent Accounting Item */}
-              <NavItem
-                icon={<LuBanknote />}
-                onClick={() => !isDisabled && setIsAccountingOpen(!isAccountingOpen)}
-                display="flex"
-                alignItems="center"
-                opacity={isDisabled ? 0.5 : 1}
-                cursor={isDisabled ? 'not-allowed' : 'pointer'}
-                pointerEvents={isDisabled ? 'none' : 'auto'}
-                position="relative"
-                _hover={{
-                  '[data-tooltip]': {
-                    display: isDisabled ? 'block' : 'none'
-                  }
-                }}
-              >
-                Accounting
-                <Box ml="auto">
-                  <Icon
-                    as={isAccountingOpen ? FaChevronDown : FaChevronUp}
-                    boxSize={3}
-                    transform={isAccountingOpen ? 'rotate(0deg)' : 'rotate(90deg)'}
-                    transition="transform 0.3s ease"
-                    color="gray.600"
-                  />
-                </Box>
-                {isDisabled && (
-                  <Box
-                    data-tooltip
-                    position="absolute"
-                    display="none"
-                    left="100%"
-                    top="50%"
-                    transform="translateY(-50%)"
-                    ml={2}
-                    px={3}
-                    py={2}
-                    bg="gray.700"
-                    color="white"
-                    borderRadius="md"
-                    fontSize="sm"
-                    zIndex={9999}
-                    whiteSpace="nowrap"
-                  >
-                    Connect at least 1 bank to access these views
-                  </Box>
-                )}
-              </NavItem>
-
-              {/* Accounting subitems */}
-              <Collapse in={isAccountingOpen}>
-                <Stack pl={4}>
-                  <AppSidebarLink
-                    href={usePath('accounts')}
-                    isActive={isAccountsActive}
-                    label="Accounts"
-                    icon={<LuLayoutGrid />}
-                    hotkey="navigation.accounts"
-                  />
-                  <AppSidebarLink
-                    href={usePath('identity')}
-                    isActive={isIdentityActive}
-                    label="Identity"
-                    icon={<LuUser />}
-                    hotkey="navigation.identity"
-                  />
-                  <AppSidebarLink
-                    href={usePath('transaction')}
-                    isActive={isTransactionActive}
-                    label="Transaction"
-                    icon={<LuReceipt />}
-                    hotkey="navigation.transaction"
-                  />
-                  <AppSidebarLink
-                    href={usePath('cashflow')}
-                    isActive={isCashflowActive}
-                    label="Cashflow"
-                    icon={<LuChartArea />}
-                    hotkey="navigation.cashflow"
-                  />
-                </Stack>
-              </Collapse>
-
-              {/* Parent Reports Item */}
-              <NavItem
-                icon={<LuFileText />}
-                onClick={() => !isDisabled && setIsReportsOpen(!isReportsOpen)}
-                display="flex"
-                alignItems="center"
-                opacity={isDisabled ? 0.5 : 1}
-                cursor={isDisabled ? 'not-allowed' : 'pointer'}
-                pointerEvents={isDisabled ? 'none' : 'auto'}
-                position="relative"
-                _hover={{
-                  '[data-tooltip]': {
-                    display: isDisabled ? 'block' : 'none'
-                  }
-                }}
-              >
-                Reports
-                <Box ml="auto">
-                  <Icon
-                    as={isReportsOpen ? FaChevronDown : FaChevronUp}
-                    boxSize={3}
-                    transform={isReportsOpen ? 'rotate(0deg)' : 'rotate(90deg)'}
-                    transition="transform 0.3s ease"
-                    color="gray.600"
-                  />
-                </Box>
-                {isDisabled && (
-                  <Box
-                    data-tooltip
-                    position="absolute"
-                    display="none"
-                    left="100%"
-                    top="50%"
-                    transform="translateY(-50%)"
-                    ml={2}
-                    px={3}
-                    py={2}
-                    bg="gray.700"
-                    color="white"
-                    borderRadius="md"
-                    fontSize="sm"
-                    zIndex={9999}
-                    whiteSpace="nowrap"
-                  >
-                    Connect at least 1 bank to access these views
-                  </Box>
-                )}
-              </NavItem>
-
-              {/* Reports subitems */}
-              <Collapse in={isReportsOpen}>
-                <Stack pl={4}>
-                  <AppSidebarLink
-                    href={usePath('profit-loss')}
-                    isActive={isProfitLossActive}
-                    label="Profit & Loss"
-                    icon={<LuTrendingUp />}
-                    hotkey="navigation.profitLoss"
-                  />
-                  <AppSidebarLink
-                    href={usePath('balance-sheet')}
-                    isActive={isBalanceSheetActive}
-                    label="Balance Sheet"
-                    icon={<LuClipboardList />}
-                    hotkey="navigation.balanceSheet"
-                  />
-                  <AppSidebarLink
-                    href={usePath('cashflow-statement')}
-                    isActive={isCashflowStatementActive}
-                    label="Cashflow Statement"
-                    icon={<LuChartPie />}
-                    hotkey="navigation.cashflowStatement"
-                  />
-                </Stack>
-              </Collapse>
-            </NavGroup>
-
-            {!isCompact && <AppSidebarTags />}
-
-            <Spacer />
-
-            <NavGroup>
-              <NavItem
-                onClick={() => modals.open(InvitePeopleDialog)}
-                color="sidebar-muted"
-                icon={<LuPlus />}
-              >
-                Invite people
-              </NavItem>
-              <NavItem
-                onClick={() => help.open()}
-                color="sidebar-muted"
-                icon={<LuCircleHelp />}
-              >
-                Help &amp; support
-              </NavItem>
+              <AppSidebarLink
+                href={usePath('/reports')}
+                label="Reports"
+                iconPath="/img/onboarding/sidebar-icons/reports-icon.svg"
+                hotkey="navigation.reports"
+              />
+              <AppSidebarLink
+                href={usePath('/human-accountants')}
+                label="Human Accountants"
+                iconPath="/img/onboarding/sidebar-icons/human-accountants-icon.svg"
+                hotkey="navigation.humanAccountants"
+              />
+              <AppSidebarLink
+                href={usePath('/settings')}
+                label="Settings"
+                iconPath="/img/onboarding/sidebar-icons/settings-icon.svg"
+                hotkey="navigation.settings"
+              />
             </NavGroup>
           </SidebarSection>
-
-          {isCompact ? (
-            <SidebarSection>
-              <UserMenu />
-            </SidebarSection>
-          ) : (
-            <BillingStatus />
-          )}
         </Stack>
         <SidebarOverlay />
         <ResizeHandle />
       </Sidebar>
     </Resizer>
-  )
-}
-
-interface AppSidebarlink<Href extends Route = Route> extends NavItemProps {
-  hotkey: string
-  href: Route<Href>
-  label: string
-  badge?: React.ReactNode
-}
-
-const AppSidebarLink = <Href extends Route = Route>(
-  props: AppSidebarlink<Href>,
-) => {
-  const { href, label, hotkey, badge, ...rest } = props
-  const { push } = useRouter()
-  const isActive = useActivePath(href)
-  const { variant } = useSidebarContext()
-  const { hasBankConnection, isLoading } = useBankConnection()
-
-  const command = useHotkeysShortcut(hotkey, () => {
-    push(href)
-  }, [href])
-
-  // Check if this link should be disabled
-  const isBankingPage = href.toString().includes('bank')
-  const isDisabled = !isLoading && !hasBankConnection && !isBankingPage
-
-  return (
-    <NavItem
-      href={href}
-      isActive={isActive}
-      opacity={isDisabled ? 0.5 : 1}
-      cursor={isDisabled ? 'not-allowed' : 'pointer'}
-      pointerEvents={isDisabled ? 'none' : 'auto'}
-      {...rest}
-      tooltipProps={{
-        label: (
-          <>
-            {label} {isDisabled ? '(Connect at least 1 bank to access this views)' : <Command>{command}</Command>}
-          </>
-        ),
-      }}
-    >
-      <Box as="span" noOfLines={1}>
-        {label}
-      </Box>
-
-      {typeof badge !== 'undefined' && variant !== 'compact' ? (
-        <Badge borderRadius="sm" ms="auto" px="1.5" bg="none">
-          {badge}
-        </Badge>
-      ) : null}
-    </NavItem>
   )
 }
