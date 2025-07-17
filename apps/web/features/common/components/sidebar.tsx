@@ -24,7 +24,6 @@ import {
   SidebarProps,
   SidebarSection,
   useHotkeysShortcut,
-  useSidebarContext,
 } from '@saas-ui/react'
 import { Route } from 'next'
 import { useRouter } from 'next/navigation'
