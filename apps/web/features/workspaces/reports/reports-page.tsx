@@ -25,18 +25,25 @@ export function ReportsPage() {
         '&::-webkit-scrollbar': {
           display: 'none'
         },
-        'scrollbarWidth': 'none',
-        '-ms-overflow-style': 'none'
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
       }}
-      p={6}
+      p={{ base: 4, md: 6 }}
     >
       {/* Header Section */}
-      <Flex justify="space-between" align="center" mb={6}>
-        <Heading size="lg" fontWeight="semibold">IFRS Statements</Heading>
+      <Flex 
+        justify="space-between" 
+        align={{ base: 'stretch', sm: 'center' }} 
+        mb={6}
+        direction={{ base: 'column', sm: 'row' }}
+        gap={{ base: 4, sm: 0 }}
+      >
+        <Heading size={{ base: "md", lg: "lg" }} fontWeight="semibold">IFRS Statements</Heading>
         <Button
-          leftIcon={<Icon as={FiSettings} boxSize={5} />}
+          leftIcon={<Icon as={FiSettings} boxSize={{ base: 4, md: 5 }} />}
           colorScheme="green"
-          size="md"
+          size={{ base: "sm", md: "md" }}
+          width={{ base: 'full', sm: 'auto' }}
         >
           Manage Settings
         </Button>
@@ -46,7 +53,7 @@ export function ReportsPage() {
       <Box 
         bg="white" 
         borderRadius="lg" 
-        p={6}
+        p={{ base: 4, md: 6 }}
         borderWidth="1px"
         borderColor={borderColor}
         mb={6}
@@ -55,70 +62,77 @@ export function ReportsPage() {
           borderColor: 'gray.600'
         }}
       >
-        <Heading size="md" mb={6}>Template Selection</Heading>
+        <Heading size={{ base: "sm", md: "md" }} mb={{ base: 4, md: 6 }}>Template Selection</Heading>
 
-        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+        <Grid 
+          templateColumns={{ 
+            base: "1fr",
+            sm: "repeat(2, 1fr)",
+            lg: "repeat(4, 1fr)"
+          }} 
+          gap={{ base: 3, md: 6 }}
+        >
           {/* Template cards... */}
           <Card 
-            p={4} 
+            p={{ base: 3, md: 4 }}
             cursor="pointer"
             borderWidth="1px"
             borderColor={borderColor}
             _hover={{ borderColor: 'green.500' }}
             transition="all 0.2s"
           >
-            <Text fontWeight="medium" mb={2}>
+            <Text fontWeight="medium" mb={2} fontSize={{ base: "sm", md: "md" }}>
               Standard IFRS Income
             </Text>
-            <Text color="gray.500" fontSize="sm">
+            <Text color="gray.500" fontSize={{ base: "xs", md: "sm" }}>
               Preview: Revenue, COGS, Net Income...
             </Text>
           </Card>
 
           <Card 
-            p={4}
+            p={{ base: 3, md: 4 }}
             cursor="pointer"
             borderWidth="1px"
             borderColor={borderColor}
             _hover={{ borderColor: 'green.500' }}
             transition="all 0.2s"
           >
-            <Text fontWeight="medium" mb={2}>
+            <Text fontWeight="medium" mb={2} fontSize={{ base: "sm", md: "md" }}>
               Standard IFRS Balance
             </Text>
-            <Text color="gray.500" fontSize="sm">
+            <Text color="gray.500" fontSize={{ base: "xs", md: "sm" }}>
               Preview: Assets, Liabilities, Equity...
             </Text>
           </Card>
 
           <Card 
-            p={4}
+            p={{ base: 3, md: 4 }}
             cursor="pointer"
             borderWidth="1px"
             borderColor={borderColor}
             _hover={{ borderColor: 'green.500' }}
             transition="all 0.2s"
           >
-            <Text fontWeight="medium" mb={2}>
+            <Text fontWeight="medium" mb={2} fontSize={{ base: "sm", md: "md" }}>
               Cash Flow Statement
             </Text>
-            <Text color="gray.500" fontSize="sm">
+            <Text color="gray.500" fontSize={{ base: "xs", md: "sm" }}>
               Preview: Operating, Investing, Financing...
             </Text>
           </Card>
 
           <Card 
-            p={4}
+            p={{ base: 3, md: 4 }}
             cursor="pointer"
             borderWidth="1px"
             borderColor={borderColor}
             _hover={{ borderColor: 'green.500' }}
             transition="all 0.2s"
           >
-            <Text fontWeight="medium" mb={2}>
+            <Text fontWeight="medium" mb={2} fontSize={{ base: "sm", md: "md" }}>
               Custom Template 1
             </Text>
-            <Text color="gray.500" fontSize="sm">
+            <Text color="gray.500" fontSize={{ base: "xs", md: "sm" }}>
               Preview: User-defined sections...
             </Text>
           </Card>
@@ -129,7 +143,7 @@ export function ReportsPage() {
       <Box 
         bg="white" 
         borderRadius="lg" 
-        p={6}
+        p={{ base: 4, md: 6 }}
         borderWidth="1px"
         borderColor={borderColor}
         _dark={{
@@ -137,55 +151,55 @@ export function ReportsPage() {
           borderColor: 'gray.600'
         }}
       >
-        <Heading size="md" mb={6}>Statement Editor</Heading>
+        <Heading size={{ base: "sm", md: "md" }} mb={{ base: 4, md: 6 }}>Statement Editor</Heading>
 
-        <VStack spacing={4} align="stretch" mb={6}>
+        <VStack spacing={{ base: 3, md: 4 }} align="stretch" mb={{ base: 4, md: 6 }}>
           <Box 
-            p={4} 
+            p={{ base: 3, md: 4 }}
             borderWidth="1px" 
             borderColor={borderColor} 
             borderRadius="md"
             cursor="pointer"
             _hover={{ borderColor: 'green.500' }}
           >
-            <Text fontWeight="medium">Income Statement - Revenue Section</Text>
+            <Text fontWeight="medium" fontSize={{ base: "sm", md: "md" }}>Income Statement - Revenue Section</Text>
           </Box>
 
           <Box 
-            p={4} 
+            p={{ base: 3, md: 4 }}
             borderWidth="1px" 
             borderColor={borderColor} 
             borderRadius="md"
             cursor="pointer"
             _hover={{ borderColor: 'green.500' }}
           >
-            <Text fontWeight="medium">Income Statement - Expense Section</Text>
+            <Text fontWeight="medium" fontSize={{ base: "sm", md: "md" }}>Income Statement - Expense Section</Text>
           </Box>
 
           <Box 
-            p={4} 
+            p={{ base: 3, md: 4 }}
             borderWidth="1px" 
             borderColor={borderColor} 
             borderRadius="md"
             cursor="pointer"
             _hover={{ borderColor: 'green.500' }}
           >
-            <Text fontWeight="medium">Balance Sheet - Assets</Text>
+            <Text fontWeight="medium" fontSize={{ base: "sm", md: "md" }}>Balance Sheet - Assets</Text>
           </Box>
 
           <Box 
-            p={4} 
+            p={{ base: 3, md: 4 }}
             borderWidth="1px" 
             borderColor={borderColor} 
             borderRadius="md"
             cursor="pointer"
             _hover={{ borderColor: 'green.500' }}
           >
-            <Text fontWeight="medium">Balance Sheet - Liabilities & Equity</Text>
+            <Text fontWeight="medium" fontSize={{ base: "sm", md: "md" }}>Balance Sheet - Liabilities & Equity</Text>
           </Box>
 
           <Box 
-            p={3}
+            p={{ base: 2, md: 3 }}
             borderWidth="2px"
             borderStyle="dashed"
             borderColor="green.200"
@@ -195,13 +209,31 @@ export function ReportsPage() {
             bg="#CEECE5"
             _hover={{ borderColor: 'green.500' }}
           >
-            <Text color="green.500" fontWeight="medium">Add New Component</Text>
+            <Text color="green.500" fontWeight="medium" fontSize={{ base: "sm", md: "md" }}>Add New Component</Text>
           </Box>
         </VStack>
 
-        <Flex justify="flex-end" gap={4}>
-          <Button colorScheme="green">Save Statement</Button>
-          <Button variant="outline" colorScheme="green">Export (PDF/Excel)</Button>
+        <Flex 
+          justify="flex-end" 
+          gap={{ base: 2, md: 4 }}
+          direction={{ base: 'column', sm: 'row' }}
+          width="full"
+        >
+          <Button 
+            colorScheme="green"
+            size={{ base: "sm", md: "md" }}
+            width={{ base: 'full', sm: 'auto' }}
+          >
+            Save Statement
+          </Button>
+          <Button 
+            variant="outline" 
+            colorScheme="green"
+            size={{ base: "sm", md: "md" }}
+            width={{ base: 'full', sm: 'auto' }}
+          >
+            Export (PDF/Excel)
+          </Button>
         </Flex>
       </Box>
     </Box>
