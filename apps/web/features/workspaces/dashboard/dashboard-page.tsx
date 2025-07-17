@@ -23,7 +23,7 @@ export function DashboardPage() {
   const [activeTab, setActiveTab] = useState('default')
   const bgColor = useColorModeValue('gray.50', 'gray.800')
   const containerBg = useColorModeValue('white', 'gray.700')
-  const borderColor = useColorModeValue('gray.200', 'gray.600')
+  // const borderColor = useColorModeValue('gray.100', 'gray.700')
   const containerPadding = useBreakpointValue({ base: 2, sm: 4 })
   const headerDirection = useBreakpointValue({ base: 'column', sm: 'row' } as const)
   const headerSpacing = useBreakpointValue({ base: 4, sm: 0 })
@@ -36,16 +36,14 @@ export function DashboardPage() {
         '&::-webkit-scrollbar': {
           display: 'none'
         },
-        'scrollbarWidth': 'none',
-        '-ms-overflow-style': 'none'
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
       }}
     >
       <Box bg={bgColor}>
         <Container maxW="container.xl" px={{ base: 0, sm: 4 }}>
           <Box 
             bg={containerBg}
-            borderX={{ base: 0, sm: '1px' }}
-            borderColor={borderColor}
             p={containerPadding}
           >
             {/* Header Section */}

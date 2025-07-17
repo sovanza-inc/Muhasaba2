@@ -11,7 +11,7 @@ interface NavTabsProps {
 export function NavTabs({ activeTab, onTabChange }: NavTabsProps) {
   const tabColor = useColorModeValue('gray.600', 'gray.400')
   const activeTabColor = useColorModeValue('blue.500', 'blue.300')
-  const borderColor = useColorModeValue('gray.200', 'gray.600')
+  const borderColor = useColorModeValue('gray.100', 'gray.700')
   const showNewDashboardButton = useBreakpointValue({ base: false, md: true })
   const padding = useBreakpointValue({ base: 4, md: 6 })
   const isMobile = useBreakpointValue({ base: true, md: false })
@@ -54,7 +54,7 @@ export function NavTabs({ activeTab, onTabChange }: NavTabsProps) {
         justify="space-between" 
         gap={2}
       >
-        <Box overflowX={{ base: 'visible', md: 'auto' }} width="full">
+        <Box width="full">
           <Tabs 
             index={tabItems.findIndex(tab => tab.id === activeTab)}
             onChange={(index) => onTabChange(tabItems[index].id)}
