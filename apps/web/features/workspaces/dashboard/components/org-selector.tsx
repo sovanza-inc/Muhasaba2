@@ -16,7 +16,6 @@ interface OrgSelectorProps {
 }
 
 export function OrgSelector({ orgName }: OrgSelectorProps) {
-  const borderColor = useColorModeValue('gray.200', 'gray.600')
   const hoverBg = useColorModeValue('gray.50', 'gray.700')
 
   return (

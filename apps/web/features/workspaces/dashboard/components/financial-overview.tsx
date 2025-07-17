@@ -58,7 +58,7 @@ function FinancialCard({ title, totalAmount, currentAmount, overdueAmount, progr
         bg="gray.100"
         sx={{
           '& > div': {
-            background: 'linear-gradient(90deg, #FFB97D 0%, #F6E1B8 100%)'
+            background: '#FFD78F'
           }
         }}
       />
@@ -92,7 +92,7 @@ export function FinancialOverview() {
         totalAmount="Total Unpaid Invoices ₹112.00"
         currentAmount="0.00"
         overdueAmount="112.00"
-        progress={30}
+        progress={10}
       />
       <FinancialCard
         title="Total Payables"

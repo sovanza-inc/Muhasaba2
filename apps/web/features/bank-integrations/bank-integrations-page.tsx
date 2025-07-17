@@ -6,7 +6,6 @@ import {
   PageBody,
   PageHeader,
 } from '@saas-ui-pro/react'
-import { EmptyState } from '@saas-ui/react'
 import { LuWallet } from 'react-icons/lu'
 import {
   Button,
@@ -18,7 +17,6 @@ import {
   Icon,
   SimpleGrid,
   Badge,
-  Spinner,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -27,8 +25,27 @@ import {
   DrawerCloseButton,
 } from '@chakra-ui/react'
 
+interface BankEntity {
+  id: string
+  customer_id: string
+  bank_identifier: string
+  permissions: {
+    identity: boolean
+    accounts: boolean
+    balance: boolean
+    transactions: boolean
+    identities: boolean
+    scheduled_payments: boolean
+    standing_orders: boolean
+    direct_debits: boolean
+    beneficiaries: boolean
+  }
+  bank_type: 'PERSONAL' | 'BUSINESS'
+  created_at: string
+}
+
 // Mock data for bank entities
-const MOCK_CONNECTED_ENTITIES = [
+const MOCK_CONNECTED_ENTITIES: BankEntity[] = [
   {
     id: 'bank-1',
     customer_id: 'cust-1',
@@ -145,7 +162,7 @@ const MOCK_TRANSACTIONS = [
 
 export function BankIntegrationsPage() {
   const toast = useToast()
-  const [selectedBank, setSelectedBank] = React.useState(null)
+  const [selectedBank, setSelectedBank] = React.useState<BankEntity | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
 
   const handleAddBankIntegration = React.useCallback(() => {
@@ -162,7 +179,7 @@ export function BankIntegrationsPage() {
     }, 1000)
   }, [toast])
 
-  const handleBankSelect = React.useCallback((bank) => {
+  const handleBankSelect = React.useCallback((bank: BankEntity) => {
     setSelectedBank(bank)
   }, [])
 

@@ -16,13 +16,23 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
 }) => {
   return (
     <AppShell
-      h="$100vh"
+      h="100vh"
       sidebar={sidebar}
       navbar={<PaymentOverdueBanner />}
+      sx={{
+        '& > div:last-child': { // Main content container
+          height: '100vh',
+          overflowY: 'auto',
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          },
+          scrollbarWidth: 'none',
+          '-ms-overflow-style': 'none'
+        }
+      }}
       {...rest}
     >
       {children}
-      
     </AppShell>
   )
 }

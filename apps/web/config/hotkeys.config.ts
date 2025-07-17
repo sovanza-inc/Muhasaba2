@@ -42,6 +42,14 @@ export const appHotkeys = {
         label: 'Go to Bank Integrations',
         command: 'G then B',
       },
+      reconciliation: {
+        label: 'Go to Reconciliation',
+        command: 'G then R',
+      },
+      reports: {
+        label: 'Go to Reports',
+        command: 'G then P',
+      },
     },
   },
   contacts: {
