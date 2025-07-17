@@ -24,7 +24,21 @@ export function NotificationBanner({ title, description, onClose }: Notification
       position="relative"
     >
       <Flex align="flex-start" gap={4}>
-        <Icon as={FiAlertTriangle} boxSize={6} color="orange.400" mt={1} />
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="full"
+          bg="#FFD78F"
+          width="40px"
+          height="40px"
+        >
+          <Icon 
+            as={FiAlertTriangle} 
+            boxSize={6} 
+            color="#F57C00"
+          />
+        </Box>
         
         <Box flex="1">
           <Text fontWeight="medium" mb={1}>{title}</Text>

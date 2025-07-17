@@ -147,6 +147,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = (props) => {
         bg="white"
         borderRightWidth="1px"
         borderRightColor="gray.200"
+        height="100vh"
+        overflow="hidden"
         sx={{
           _dark: {
             bg: 'gray.900',
@@ -178,7 +180,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = (props) => {
             </Flex>
           </SidebarSection>
 
-          <SidebarSection overflowY="auto" flex="1" pt={4}>
+          <SidebarSection flex="1">
             <NavGroup>
               <AppSidebarLink
                 href={usePath('/integrations')}

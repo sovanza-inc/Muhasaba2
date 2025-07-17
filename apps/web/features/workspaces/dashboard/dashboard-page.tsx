@@ -31,17 +31,27 @@ export function DashboardPage() {
   const borderColor = useColorModeValue('gray.200', 'gray.600')
 
   return (
-    <Box as="main" minH="100vh" bg={bgColor}>
-      <Container maxW="container.xl" px={0} h="100vh">
-        <Box 
-          bg={containerBg}
-          minH="100vh"
-          borderX="1px"
-          borderColor={borderColor}
-        >
-          {/* Header Section */}
-          <Box px={4} py={4}>
-            <Flex justify="space-between" align="center">
+    <Box 
+      height="100vh"
+      overflowY="auto"
+      sx={{
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        },
+        'scrollbarWidth': 'none',
+        '-ms-overflow-style': 'none'
+      }}
+    >
+      <Box bg={bgColor}>
+        <Container maxW="container.xl" px={0}>
+          <Box 
+            bg={containerBg}
+            borderX="1px"
+            borderColor={borderColor}
+            p={4}
+          >
+            {/* Header Section */}
+            <Flex justify="space-between" align="center" mb={6}>
               <Heading size="lg" fontWeight="semibold">Integrations</Heading>
               <Button
                 leftIcon={<Icon as={FiSettings} boxSize={5} />}
@@ -52,36 +62,34 @@ export function DashboardPage() {
                 Manage Settings
               </Button>
             </Flex>
-          </Box>
 
-          {/* Support Section */}
-          <SupportSection />
+            {/* Support Section */}
+            <SupportSection />
 
-          {/* Navigation Tabs */}
-          <Box px={4}>
+            {/* Navigation Tabs */}
             <NavTabs activeTab={activeTab} onTabChange={setActiveTab} />
-          </Box>
 
-          {/* Content Area */}
-          <Box px={4} py={4}>
-            <NotificationBanner
-              title="TDS Rate Updates in Zoho Books"
-              description="The Union Budget 2024-25 has revised the Tax Deducted at Source (TDS) rates for various sections. These changes will take effect from October 1, 2024. To ensure compliance, Zoho Books updates the TDS rates in your organization."
-              onClose={() => {}}
-            />
-
-            {/* Financial Overview */}
+            {/* Content Area */}
             <Box mt={4}>
-              <FinancialOverview />
-            </Box>
+              <NotificationBanner
+                title="TDS Rate Updates in Zoho Books"
+                description="The Union Budget 2024-25 has revised the Tax Deducted at Source (TDS) rates for various sections. These changes will take effect from October 1, 2024. To ensure compliance, Zoho Books updates the TDS rates in your organization."
+                onClose={() => {}}
+              />
 
-            {/* Cash Flow */}
-            <Box mt={4}>
-              <CashFlow />
+              {/* Financial Overview */}
+              <Box mt={4}>
+                <FinancialOverview />
+              </Box>
+
+              {/* Cash Flow */}
+              <Box mt={4}>
+                <CashFlow />
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </Container>
+        </Container>
+      </Box>
     </Box>
   )
 }

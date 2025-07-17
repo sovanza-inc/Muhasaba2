@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 
 import { ErrorBoundary } from '@saas-ui/react'
-
+import { DashboardLayout } from '#features/common/layouts/dashboard-layout'
 import { BillingProvider } from '#features/billing/providers/billing-provider'
 import { WorkspaceLoading } from '#features/workspaces/workspace.loading'
 import { WorkspaceNotFound } from '#features/workspaces/workspace.not-found'
@@ -27,7 +27,11 @@ export default async function WorkspaceLayout(props: {
         <ErrorBoundary fallback={<WorkspaceNotFound />}>
           <QuestionnaireFlow>
             <QuestionnaireProvider>
-              <BillingProvider>{props.children}</BillingProvider>
+              <BillingProvider>
+                <DashboardLayout>
+                  {props.children}
+                </DashboardLayout>
+              </BillingProvider>
             </QuestionnaireProvider>
           </QuestionnaireFlow>
         </ErrorBoundary>
