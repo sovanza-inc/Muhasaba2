@@ -17,7 +17,6 @@ import { useState } from 'react'
 
 export function AIAssistantPage() {
   const [messageInput, setMessageInput] = useState('')
-  const bgColor = useColorModeValue('gray.50', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
 
   return (
@@ -48,7 +47,7 @@ export function AIAssistantPage() {
             maxW="80%" 
             mb={4}
           >
-            <Text>Hello! I'm Muhasaba AI, your intelligent accounting assistant. How can I help you today?</Text>
+            <Text>Hello! I&apos;m Muhasaba AI, your intelligent accounting assistant. How can I help you today?</Text>
             <Text fontSize="sm" color="gray.500" mt={2}>10:00 AM</Text>
           </Box>
 

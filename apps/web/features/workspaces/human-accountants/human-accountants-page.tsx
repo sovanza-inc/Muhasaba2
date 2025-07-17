@@ -14,7 +14,6 @@ import {
 import { FiSettings } from 'react-icons/fi'
 
 export function HumanAccountantsPage() {
-  const bgColor = useColorModeValue('gray.50', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
   const textColor = useColorModeValue('gray.600', 'gray.400')
 
@@ -132,21 +131,21 @@ export function HumanAccountantsPage() {
               <Text color={textColor} minW="120px">
                 2023-10-24<br/>14:30
               </Text>
-              <Text>Jane Smith approved 'Invoice #INV5678' reconciliation.</Text>
+              <Text>Jane Smith approved &apos;Invoice #INV5678&apos; reconciliation.</Text>
             </Flex>
 
             <Flex gap={4}>
               <Text color={textColor} minW="120px">
                 2023-10-23 10:15
               </Text>
-              <Text>John Doe requested modification for 'Payroll Batch #PAY9012'.</Text>
+              <Text>John Doe requested modification for &apos;Payroll Batch #PAY9012&apos;.</Text>
             </Flex>
 
             <Flex gap={4}>
               <Text color={textColor} minW="120px">
                 2023-10-22<br/>09:00
               </Text>
-              <Text>AI System submitted 'Q3 Revenue Report' for review.</Text>
+              <Text>AI System submitted &apos;Q3 Revenue Report&apos; for review.</Text>
             </Flex>
           </VStack>
         </Box>

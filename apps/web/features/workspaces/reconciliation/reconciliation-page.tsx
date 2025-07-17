@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Flex, Text, Icon, VStack, Card, CardHeader, CardBody, Button, Table, Thead, Tbody, Tr, Th, Td, Input, InputGroup, InputLeftElement, Badge, HStack } from '@chakra-ui/react'
+import { Box, Flex, Text, Icon, VStack, Card, CardHeader, CardBody, Button, Table, Thead, Tbody, Tr, Th, Td, Input, InputGroup, InputLeftElement, Badge } from '@chakra-ui/react'
 import { FiUpload, FiDownload, FiClock, FiSearch } from 'react-icons/fi'
 
 export function ReconciliationPage() {
@@ -144,11 +144,11 @@ export function ReconciliationPage() {
                 <VStack align="stretch" spacing={3}>
                   <Flex justify="space-between">
                     <Text color="gray.600">Original Bank Entry:</Text>
-                    <Text>"Netflix Inc. 19.99"</Text>
+                    <Text>&quot;Netflix Inc. 19.99&quot;</Text>
                   </Flex>
                   <Flex justify="space-between">
                     <Text color="gray.600">Accounting Record:</Text>
-                    <Text>"Invoice #INV-2024-001"</Text>
+                    <Text>&quot;Invoice #INV-2024-001&quot;</Text>
                   </Flex>
                   <Flex justify="space-between">
                     <Text color="gray.600">Status:</Text>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Flex, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Flex, Tab, TabList, Tabs, useColorModeValue } from '@chakra-ui/react'
 import { FiPlus } from 'react-icons/fi'
 
 interface NavTabsProps {

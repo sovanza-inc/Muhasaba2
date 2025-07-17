@@ -15,7 +15,6 @@ import {
 import { FiSettings } from 'react-icons/fi'
 
 export function ReportsPage() {
-  const bgColor = useColorModeValue('gray.50', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
 
   return (

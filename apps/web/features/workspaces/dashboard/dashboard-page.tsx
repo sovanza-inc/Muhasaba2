@@ -10,13 +10,8 @@ import {
   Heading,
   Icon,
   useColorModeValue,
-  Text,
-  Link,
 } from '@chakra-ui/react'
 import { FiSettings } from 'react-icons/fi'
-import { useCurrentWorkspace } from '#features/common/hooks/use-current-workspace'
-import { TopBarIcons } from './components/top-bar-icons'
-import { OrgSelector } from './components/org-selector'
 import { NavTabs } from './components/nav-tabs'
 import { NotificationBanner } from './components/notification-banner'
 import { SupportSection } from './components/support-section'
@@ -24,7 +19,6 @@ import { FinancialOverview } from './components/financial-overview'
 import { CashFlow } from './components/cash-flow'
 
 export function DashboardPage() {
-  const [workspace] = useCurrentWorkspace()
   const [activeTab, setActiveTab] = useState('default')
   const bgColor = useColorModeValue('gray.50', 'gray.800')
   const containerBg = useColorModeValue('white', 'gray.700')

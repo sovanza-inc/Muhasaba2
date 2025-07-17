@@ -1,7 +1,6 @@
 'use client'
 
 import { AppShell, AppShellProps } from '@saas-ui/react'
-import { Box } from '@chakra-ui/react'
 
 import { PaymentOverdueBanner } from '#features/billing/components/payment-overdue-banner'
 

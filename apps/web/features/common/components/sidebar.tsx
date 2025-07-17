@@ -4,12 +4,8 @@ import * as React from 'react'
 
 import {
   Box,
-  IconButton,
-  Spacer,
   Stack,
   useBreakpointValue,
-  Icon,
-  Collapse,
   Image,
   Flex,
 } from '@chakra-ui/react'
@@ -27,7 +23,6 @@ import {
   SidebarOverlay,
   SidebarProps,
   SidebarSection,
-  SidebarToggleButton,
   useHotkeysShortcut,
   useSidebarContext,
 } from '@saas-ui/react'
@@ -45,7 +40,6 @@ interface AppSidebarLinkBaseProps {
   href: Route
   label: string
   hotkey?: string
-  badge?: string | number
   iconPath: string
 }
 
@@ -53,15 +47,19 @@ interface AppSidebarLinkBaseProps {
 type AppSidebarLinkProps = Omit<NavItemProps, 'icon' | keyof AppSidebarLinkBaseProps> & AppSidebarLinkBaseProps
 
 const AppSidebarLink: React.FC<AppSidebarLinkProps> = (props) => {
-  const { href, label, hotkey, badge, iconPath, ...rest } = props
+  const { href, label, hotkey, iconPath, ...rest } = props
   const { push } = useRouter()
   const isActive = useActivePath(href as string)
   const { variant } = useSidebarContext()
 
-  // Only register hotkey if it's a valid navigation hotkey
-  const command = hotkey?.startsWith('navigation.') ? useHotkeysShortcut(hotkey, () => {
-    push(href as string)
-  }, [href]) : null
+  // Move hook outside conditional
+  const hotkeyCommand = useHotkeysShortcut(hotkey || '', () => {
+    if (hotkey?.startsWith('navigation.')) {
+      push(href as string)
+    }
+  }, [href, hotkey])
+
+  const command = hotkey?.startsWith('navigation.') ? hotkeyCommand : null
 
   return (
     <NavItem
