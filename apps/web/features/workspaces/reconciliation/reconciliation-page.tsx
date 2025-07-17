@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Flex, Text, Icon, VStack, Card, CardHeader, CardBody, Table, Thead, Tbody, Tr, Th, Td, Input, InputGroup, InputLeftElement, Badge } from '@chakra-ui/react'
+import { Box, Button, Flex, Text, Icon, VStack, Card, CardBody, Table, Thead, Tbody, Tr, Th, Td, Input, InputGroup, InputLeftElement, Badge } from '@chakra-ui/react'
 import { FiSearch } from 'react-icons/fi'
 
 // Sample transaction data
