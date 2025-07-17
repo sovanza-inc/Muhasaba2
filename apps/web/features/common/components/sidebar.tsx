@@ -50,7 +50,6 @@ const AppSidebarLink: React.FC<AppSidebarLinkProps> = (props) => {
   const { href, label, hotkey, iconPath, ...rest } = props
   const { push } = useRouter()
   const isActive = useActivePath(href as string)
-  const { variant } = useSidebarContext()
 
   // Move hook outside conditional
   const hotkeyCommand = useHotkeysShortcut(hotkey || '', () => {
