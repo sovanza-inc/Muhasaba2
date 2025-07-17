@@ -9,6 +9,7 @@ import {
   Button,
   useColorModeValue,
   Progress,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { FiHelpCircle, FiChevronDown } from 'react-icons/fi'
 
@@ -23,6 +24,9 @@ interface FinancialCardProps {
 function FinancialCard({ title, totalAmount, currentAmount, overdueAmount, progress = 0 }: FinancialCardProps) {
   const borderColor = useColorModeValue('gray.200', 'gray.600')
   const bgColor = useColorModeValue('white', 'gray.700')
+  const fontSize = useBreakpointValue({ base: 'sm', md: 'md' })
+  const headingSize = useBreakpointValue({ base: 'md', md: 'lg' })
+  const padding = useBreakpointValue({ base: 4, md: 6 })
 
   return (
     <Box
@@ -30,11 +34,17 @@ function FinancialCard({ title, totalAmount, currentAmount, overdueAmount, progr
       borderRadius="lg"
       border="1px"
       borderColor={borderColor}
-      p={6}
+      p={padding}
     >
-      <Flex justify="space-between" align="center" mb={4}>
+      <Flex 
+        direction={{ base: 'column', sm: 'row' }}
+        justify="space-between" 
+        align={{ base: 'flex-start', sm: 'center' }} 
+        mb={4}
+        gap={2}
+      >
         <Flex align="center" gap={2}>
-          <Text fontSize="lg" fontWeight="semibold">{title}</Text>
+          <Text fontSize={headingSize} fontWeight="semibold">{title}</Text>
           <Icon as={FiHelpCircle} color="gray.400" />
         </Flex>
         <Button
@@ -43,12 +53,13 @@ function FinancialCard({ title, totalAmount, currentAmount, overdueAmount, progr
           size="sm"
           fontWeight="medium"
           leftIcon={<Text as="span" fontSize="lg">+</Text>}
+          width={{ base: 'full', sm: 'auto' }}
         >
           New
         </Button>
       </Flex>
 
-      <Text color="gray.600" mb={4}>{totalAmount}</Text>
+      <Text color="gray.600" mb={4} fontSize={fontSize}>{totalAmount}</Text>
 
       <Progress
         value={progress}
@@ -63,17 +74,29 @@ function FinancialCard({ title, totalAmount, currentAmount, overdueAmount, progr
         }}
       />
 
-      <Grid templateColumns="1fr 1fr" gap={8}>
+      <Grid 
+        templateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)' }}
+        gap={{ base: 4, sm: 8 }}
+      >
         <Box>
           <Text color="gray.500" fontSize="sm" mb={1}>CURRENT</Text>
-          <Text fontSize="xl" fontWeight="medium">₹{currentAmount}</Text>
+          <Text fontSize={{ base: 'lg', md: 'xl' }} fontWeight="medium">₹{currentAmount}</Text>
         </Box>
         <Box>
-          <Text color="red.500" fontSize="sm" textAlign="right" mb={1}>
+          <Text 
+            color="red.500" 
+            fontSize="sm" 
+            textAlign={{ base: 'left', sm: 'right' }} 
+            mb={1}
+          >
             OVERDUE
           </Text>
-          <Flex justify="flex-end" align="center" gap={1}>
-            <Text fontSize="xl" fontWeight="medium">
+          <Flex 
+            justify={{ base: 'flex-start', sm: 'flex-end' }} 
+            align="center" 
+            gap={1}
+          >
+            <Text fontSize={{ base: 'lg', md: 'xl' }} fontWeight="medium">
               ₹{overdueAmount}
             </Text>
             <Icon as={FiChevronDown} color="gray.400" boxSize={4} />
@@ -86,7 +109,10 @@ function FinancialCard({ title, totalAmount, currentAmount, overdueAmount, progr
 
 export function FinancialOverview() {
   return (
-    <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+    <Grid 
+      templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} 
+      gap={6}
+    >
       <FinancialCard
         title="Total Receivables"
         totalAmount="Total Unpaid Invoices ₹112.00"
