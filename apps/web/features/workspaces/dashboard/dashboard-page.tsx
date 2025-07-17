@@ -10,6 +10,7 @@ import {
   Heading,
   Icon,
   useColorModeValue,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { FiSettings } from 'react-icons/fi'
 import { NavTabs } from './components/nav-tabs'
@@ -23,6 +24,9 @@ export function DashboardPage() {
   const bgColor = useColorModeValue('gray.50', 'gray.800')
   const containerBg = useColorModeValue('white', 'gray.700')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
+  const containerPadding = useBreakpointValue({ base: 2, sm: 4 })
+  const headerDirection = useBreakpointValue({ base: 'column', sm: 'row' } as const)
+  const headerSpacing = useBreakpointValue({ base: 4, sm: 0 })
 
   return (
     <Box 
@@ -37,31 +41,42 @@ export function DashboardPage() {
       }}
     >
       <Box bg={bgColor}>
-        <Container maxW="container.xl" px={0}>
+        <Container maxW="container.xl" px={{ base: 0, sm: 4 }}>
           <Box 
             bg={containerBg}
-            borderX="1px"
+            borderX={{ base: 0, sm: '1px' }}
             borderColor={borderColor}
-            p={4}
+            p={containerPadding}
           >
             {/* Header Section */}
-            <Flex justify="space-between" align="center" mb={6}>
-              <Heading size="lg" fontWeight="semibold">Integrations</Heading>
+            <Flex 
+              direction={headerDirection} 
+              justify="space-between" 
+              align={{ base: 'stretch', sm: 'center' }} 
+              mb={6}
+              gap={headerSpacing}
+            >
+              <Heading size={{ base: 'md', sm: 'lg' }} fontWeight="semibold">Integrations</Heading>
               <Button
                 leftIcon={<Icon as={FiSettings} boxSize={5} />}
                 size="md"
                 colorScheme="green"
                 fontWeight="medium"
+                width={{ base: 'full', sm: 'auto' }}
               >
                 Manage Settings
               </Button>
             </Flex>
 
             {/* Support Section */}
-            <SupportSection />
+            <Box mb={0}>
+              <SupportSection />
+            </Box>
 
             {/* Navigation Tabs */}
-            <NavTabs activeTab={activeTab} onTabChange={setActiveTab} />
+            <Box>
+              <NavTabs activeTab={activeTab} onTabChange={setActiveTab} />
+            </Box>
 
             {/* Content Area */}
             <Box mt={4}>
