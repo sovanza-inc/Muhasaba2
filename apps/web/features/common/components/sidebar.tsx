@@ -23,6 +23,7 @@ import {
   SidebarOverlay,
   SidebarProps,
   SidebarSection,
+  SidebarToggleButton,
   useHotkeysShortcut,
 } from '@saas-ui/react'
 import { Route } from 'next'
@@ -35,22 +36,18 @@ import { useUserSettings } from '#lib/user-settings/use-user-settings'
 
 export interface AppSidebarProps extends SidebarProps {}
 
-interface AppSidebarLinkBaseProps {
+interface AppSidebarLinkProps extends NavItemProps {
   href: Route
   label: string
   hotkey?: string
   iconPath: string
 }
 
-// Create a type that excludes 'icon' from NavItemProps and combines with our base props
-type AppSidebarLinkProps = Omit<NavItemProps, 'icon' | keyof AppSidebarLinkBaseProps> & AppSidebarLinkBaseProps
-
 const AppSidebarLink: React.FC<AppSidebarLinkProps> = (props) => {
   const { href, label, hotkey, iconPath, ...rest } = props
   const { push } = useRouter()
   const isActive = useActivePath(href as string)
 
-  // Move hook outside conditional
   const hotkeyCommand = useHotkeysShortcut(hotkey || '', () => {
     if (hotkey?.startsWith('navigation.')) {
       push(href as string)
@@ -117,7 +114,7 @@ const AppSidebarLink: React.FC<AppSidebarLinkProps> = (props) => {
   )
 }
 
-export const AppSidebar: React.FC<AppSidebarProps> = (props) => {
+export function AppSidebar(props: AppSidebarProps) {
   const [{ sidebarWidth }, setUserSettings] = useUserSettings()
   const { variant, colorScheme } = props
   const isCompact = variant === 'compact'
@@ -127,105 +124,113 @@ export const AppSidebar: React.FC<AppSidebarProps> = (props) => {
   }
 
   return (
-    <Resizer
-      defaultWidth={isCompact ? 60 : sidebarWidth}
-      onResize={onResize}
-      isResizable={useBreakpointValue(
-        { base: false, lg: true },
-        { fallback: 'lg' },
-      )}
-    >
-      <Sidebar
-        {...props}
-        variant={variant}
-        colorScheme={colorScheme}
-        suppressHydrationWarning
-        bg="white"
-        borderRightWidth="1px"
-        borderRightColor="gray.200"
-        height="100vh"
-        overflow="hidden"
-        sx={{
-          _dark: {
-            bg: 'gray.900',
-            borderRightColor: 'gray.700'
-          }
-        }}
+    <>
+      <SidebarToggleButton 
+        position="fixed"
+        top="4"
+        left="4"
+        zIndex="sticky"
+        display={{ base: 'flex', lg: 'none' }}
+        size="lg"
+        fontSize="24px"
+        width="40px"
+        height="40px"
+     />
+      <Resizer
+        defaultWidth={isCompact ? 60 : sidebarWidth}
+        onResize={onResize}
+        isResizable={useBreakpointValue({ base: false, lg: true })}
       >
-        <Stack flex="1" spacing="0">
-          <SidebarSection>
-            <Flex 
-              px={4} 
-              py={4} 
-              alignItems="center" 
-              height="64px" 
-              borderBottomWidth="1px" 
-              borderBottomColor="gray.200"
-              sx={{
-                _dark: {
-                  borderBottomColor: 'gray.700'
-                }
-              }}
-            >
-              <Image
-                src="/img/onboarding/muhasaba-logo.svg"
-                alt="Muhasaba"
-                height="32px"
-                objectFit="contain"
-              />
-            </Flex>
-          </SidebarSection>
+        <Sidebar
+          {...props}
+          variant={variant}
+          colorScheme={colorScheme}
+          bg="white"
+          borderRightWidth="1px"
+          borderRightColor="gray.200"
+          height="100vh"
+          sx={{
+            _dark: {
+              bg: 'gray.900',
+              borderRightColor: 'gray.700'
+            }
+          }}
+        >
+          <Stack flex="1" spacing="0">
+            <SidebarSection>
+              <Flex 
+                px={4} 
+                py={4} 
+                alignItems="center" 
+                height="64px" 
+                borderBottomWidth="1px" 
+                borderBottomColor="gray.200"
+                sx={{
+                  _dark: {
+                    borderBottomColor: 'gray.700'
+                  }
+                }}
+              >
+                <Image
+                  src="/img/onboarding/muhasaba-logo.svg"
+                  alt="Muhasaba"
+                  height="32px"
+                  objectFit="contain"
+                />
+              </Flex>
+            </SidebarSection>
 
-          <SidebarSection flex="1">
-            <NavGroup>
-              <AppSidebarLink
-                href={usePath('/integrations')}
-                label="Integrations"
-                iconPath="/img/onboarding/sidebar-icons/integration-icon.svg"
-                hotkey="navigation.integrations"
-              />
-              <AppSidebarLink
-                href={usePath('/')}
-                label="Dashboard"
-                iconPath="/img/onboarding/sidebar-icons/dashboard-icon.svg"
-                hotkey="navigation.dashboard"
-              />
-              <AppSidebarLink
-                href={usePath('/reconciliation')}
-                label="Reconciliation"
-                iconPath="/img/onboarding/sidebar-icons/reconciliation-icon.svg"
-                hotkey="navigation.reconciliation"
-              />
-              <AppSidebarLink
-                href={usePath('/ai-assistant')}
-                label="AI Assistant"
-                iconPath="/img/onboarding/sidebar-icons/ai-assistant-icon.svg"
-                hotkey="navigation.aiAssistant"
-              />
-              <AppSidebarLink
-                href={usePath('/reports')}
-                label="Reports"
-                iconPath="/img/onboarding/sidebar-icons/reports-icon.svg"
-                hotkey="navigation.reports"
-              />
-              <AppSidebarLink
-                href={usePath('/human-accountants')}
-                label="Human Accountants"
-                iconPath="/img/onboarding/sidebar-icons/human-accountants-icon.svg"
-                hotkey="navigation.humanAccountants"
-              />
-              <AppSidebarLink
-                href={usePath('/settings')}
-                label="Settings"
-                iconPath="/img/onboarding/sidebar-icons/settings-icon.svg"
-                hotkey="navigation.settings"
-              />
-            </NavGroup>
-          </SidebarSection>
-        </Stack>
-        <SidebarOverlay />
-        <ResizeHandle />
-      </Sidebar>
-    </Resizer>
+            <SidebarSection flex="1">
+              <NavGroup>
+                <AppSidebarLink
+                  href={usePath('/integrations')}
+                  label="Integrations"
+                  iconPath="/img/onboarding/sidebar-icons/integration-icon.svg"
+                  hotkey="navigation.integrations"
+                />
+                <AppSidebarLink
+                  href={usePath('/')}
+                  label="Dashboard"
+                  iconPath="/img/onboarding/sidebar-icons/dashboard-icon.svg"
+                  hotkey="navigation.dashboard"
+                />
+                <AppSidebarLink
+                  href={usePath('/reconciliation')}
+                  label="Reconciliation"
+                  iconPath="/img/onboarding/sidebar-icons/reconciliation-icon.svg"
+                  hotkey="navigation.reconciliation"
+                />
+                <AppSidebarLink
+                  href={usePath('/ai-assistant')}
+                  label="AI Assistant"
+                  iconPath="/img/onboarding/sidebar-icons/ai-assistant-icon.svg"
+                  hotkey="navigation.aiAssistant"
+                />
+                <AppSidebarLink
+                  href={usePath('/reports')}
+                  label="Reports"
+                  iconPath="/img/onboarding/sidebar-icons/reports-icon.svg"
+                  hotkey="navigation.reports"
+                />
+                <AppSidebarLink
+                  href={usePath('/human-accountants')}
+                  label="Human Accountants"
+                  iconPath="/img/onboarding/sidebar-icons/human-accountants-icon.svg"
+                  hotkey="navigation.humanAccountants"
+                />
+                <AppSidebarLink
+                  href={usePath('/settings')}
+                  label="Settings"
+                  iconPath="/img/onboarding/sidebar-icons/settings-icon.svg"
+                  hotkey="navigation.settings"
+                />
+              </NavGroup>
+            </SidebarSection>
+          </Stack>
+          <SidebarOverlay />
+          <ResizeHandle />
+        </Sidebar>
+      </Resizer>
+    </>
   )
 }
