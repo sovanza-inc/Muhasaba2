@@ -13,7 +13,6 @@ import {
   Icon,
   useColorModeValue,
   useBreakpointValue,
-  IconButton,
   useDisclosure,
   Drawer,
   DrawerBody,
@@ -136,7 +135,7 @@ export function AIAssistantPage() {
                 maxW={{ base: "90%", md: "80%" }}
                 mb={4}
               >
-                <Text>Hello! I'm Muhasaba AI, your intelligent accounting assistant. How can I help you today?</Text>
+                <Text>Hello! I&apos;m Muhasaba AI, your intelligent accounting assistant. How can I help you today?</Text>
                 <Text fontSize="sm" color="gray.500" mt={2}>10:00 AM</Text>
               </Box>
 
